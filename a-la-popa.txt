@@ -479,9 +479,9 @@ RESOURCES_DIR="$USER_HOME/.local/share/sopaspades/Resources"
 
 if [ -f "$MODERN_PACK" ]; then
     step "BONUS — 
-    | ✨🇪🇸 Instalando armas modernas 
-    | ✨🇺🇸 Installing MODERN-PACK skins 
-    | ✨🇧🇷 Instalando armas modernas"
+    | ✨🇪🇸 Instalando El MODERN-MODERN_PACK
+    | ✨🇺🇸 Installing the MODERN-PACK skins 
+    | ✨🇧🇷 Instalando O MODERN-PACK skins"
     info "Creating resources directory: $RESOURCES_DIR"
     runuser -u "$ACTUAL_USER" -- mkdir -p "$RESOURCES_DIR"
     info "Extracting modern_pack.zip..."
@@ -497,9 +497,9 @@ fi
 # =============================================================================
 echo ""
 echo -e "${GREEN}"
-echo "  ╔══════════════════════════════════════════════╗"
-echo "  ║  BUILD COMPLETE — Bom jogo! 🍜 Sopa! 🔫🇧🇷    ║"
-echo "  ╚══════════════════════════════════════════════╝"
+echo "  ╔═══════════════════════════════════════════════════════════════════════╗"
+echo "  ║  BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa! 🔫🇧🇷    ║"
+echo "  ╚═══════════════════════════════════════════════════════════════════════╝"
 echo -e "${nc}"
 echo "  To start the game, run:"
 echo ""
@@ -515,13 +515,10 @@ echo "  Source: https://github.com/atorresbr/sopaspades"
 echo ""
 
 echo -e " ✨😘🇪🇸 Comparte este script ! "
-echo
 sleep 1
 echo -e " ✨😘🇺🇸 Share this Script ! "
-echo
 sleep 1
 echo -e " ✨😘🇧🇷 Compartilhe este Script ! "
-echo
 sleep 1
 
 echo -e "${b_green} ✨🇪🇸 comenzando el Juego ${nc}"
