@@ -213,6 +213,8 @@ ${b_yellow}
 ${b_green}
 if grep -qiE '^(ID|ID_LIKE)=.*\\b(ubuntu|debian)\\b' /etc/os-release 2>/dev/null; then
     ok \"Debian-family OS detected ✅ — fully supported.\"
+    
+sleep 4
 
 ${b_yellow}
 # command -v apt-get → checks if apt-get is available in PATH without running it
@@ -226,7 +228,7 @@ fi
 ok \"Running as: \$(whoami)\"
 ${nc}
 "
-sleep 4
+sleep 2
 
 # lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
 # lsb_release -sr → prints the release number (e.g. 22.04)
