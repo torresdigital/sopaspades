@@ -192,6 +192,42 @@ step "STEP 0 —
 | ✨🇧🇷 Verificando compatibilidade"
 sleep 2
 
+echo -e "
+${b_yellow}
+# lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
+# lsb_release -sr → prints the release number (e.g. 22.04)
+# 2>/dev/null → silences any error output if lsb_release is not installed
+# || echo "Unknown" → fallback value if the command fails
+${b_green}
+DISTRO=$(lsb_release -si 2>/dev/null || echo "Unknown")
+VERSION=$(lsb_release -sr 2>/dev/null || echo "Unknown")
+info "Detected OS: $DISTRO $VERSION"
+
+"
+sleep 2
+
+echo -e "
+${b_yellow}
+# grep -qiE → quiet (-q), case-insensitive (-i), extended regex (-E) search
+# Checks /etc/os-release for lines matching ID= or ID_LIKE= containing "ubuntu" or "debian"
+# This covers all distros derived from Debian/Ubuntu (Mint, Pop!_OS, Zorin, etc.)
+${b_green}
+if grep -qiE '^(ID|ID_LIKE)=.*\b(ubuntu|debian)\b' /etc/os-release 2>/dev/null; then
+    🆗 "Debian-family OS detected ✅ — fully supported."
+
+${b_yellow}
+# command -v apt-get → checks if apt-get is available in PATH without running it
+${b_green}
+elif command -v apt-get &>/dev/null; then
+    info "Unknown distro but apt-get found — proceeding..."
+else
+    die "This script requires a Debian/Ubuntu-based system (apt-get not found)."
+fi
+
+🆗 "Running as: $(whoami)"
+${nc}
+"
+
 # lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
 # lsb_release -sr → prints the release number (e.g. 22.04)
 # 2>/dev/null → silences any error output if lsb_release is not installed
@@ -220,11 +256,11 @@ ok "Running as: $(whoami)"
 step "STEP 1 — 
 | ✨🇪🇸 Eliminando el directorio antiguo
 | ✨🇺🇸 Removing the old directory 
-| ✨🇧🇷 Removendo o antigo diretório ✅"
+| ✨🇧🇷 Removendo o antigo diretório"
 sleep 2
-info "🇪🇸 Eliminando el directorio antiguo para reinstalar el juego. ✅"
+info "🇪🇸 Eliminando el directorio antiguo para reinstalar el juego"
 sleep 2
-info "🇺🇸 Removing the old directory to reinstall the Game ✅"
+info "🇺🇸 Removing the old directory to reinstall the Game"
 sleep 2
 info "🇧🇷 Removendo o antigo diretório para reinstalar o Jogo ✅"
 sleep 2
@@ -441,13 +477,13 @@ step "STEP 4 —
 
 echo -ne ${b_green}
 sleep 2
-echo -e " 🇪🇸 instalando "
+info " 🇪🇸 compilando y instalando "
 echo
 sleep 2
-echo -e " 🇺🇸 installing "
+info " 🇺🇸 compiling and installing "
 echo
 sleep 2
-echo -e " 🇧🇷 instalando "
+info " 🇧🇷 compilando e instalando "
 echo
 echo -ne ${nc}
 
@@ -524,9 +560,9 @@ RESOURCES_DIR="$USER_HOME/.local/share/sopaspades/Resources"
 
 if [ -f "$MODERN_PACK" ]; then
     step "BONUS — 
-    | ✨🇪🇸 Instalando El MODERN-MODERN_PACK
-    | ✨🇺🇸 Installing the MODERN-PACK skins 
-    | ✨🇧🇷 Instalando O MODERN-PACK skins"
+    | ✨🇪🇸 Instalando El MODERN-PACK
+    | ✨🇺🇸 Installing the MODERN-PACK  
+    | ✨🇧🇷 Instalando O MODERN-PACK "
     info "Creating resources directory: $RESOURCES_DIR"
     runuser -u "$ACTUAL_USER" -- mkdir -p "$RESOURCES_DIR"
     info "Extracting modern_pack.zip..."
@@ -542,9 +578,9 @@ fi
 # =============================================================================
 echo ""
 echo -e "${GREEN}"
-echo "  ╔═══════════════════════════════════════════════════════════════════════╗"
-echo "  ║  BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa! 🔫🇧🇷    ║"
-echo "  ╚═══════════════════════════════════════════════════════════════════════╝"
+echo "  ╔════════════════════════════════════════════════════════════════════════════════════════════╗"
+echo "  ║(ﾉ☉ヮ⚆)ﾉ🪄⌒*:･ﾟ✧🔥🌟✨BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa BRU 🔫🇧🇷 ║"
+echo "  ╚════════════════════════════════════════════════════════════════════════════════════════════╝"
 echo -e "${nc}"
 echo "  To start the game, run:"
 echo ""
@@ -574,7 +610,7 @@ echo -e "${b_green} ✨🇧🇷 iniciando o Jogo ${nc}"
 sleep 1
 echo
 
-echo " 🔫🍜✨sopaspades ԅ(≖‿≖ԅ)  "
+echo " 🔫🍜✨sopaspades✨ԅ(≖‿≖✨ԅ)PUPPA‼️"
 echo
 
 if [ "$ACTUAL_USER" != "root" ]; then
