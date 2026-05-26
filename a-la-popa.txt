@@ -190,49 +190,47 @@ step "STEP 0 —
 | ✨🇪🇸 Comprobando compatibilidad 
 | ✨🇺🇸 Checking system compatibility 
 | ✨🇧🇷 Verificando compatibilidade"
-sleep 4
+sleep 2
 
-echo -e "
-${b_yellow}
+# Display block 1 — show the OS detection commands before running them
+echo -e "${b_yellow}
+# lsb_release -si  → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
+# lsb_release -sr  → prints the release number (e.g. 22.04)
+# 2>/dev/null      → silences errors if lsb_release is not installed
+# || echo Unknown  → fallback value if the command fails
+${b_green}
+  DISTRO=\$(lsb_release -si 2>/dev/null || echo \"Unknown\")
+  VERSION=\$(lsb_release -sr 2>/dev/null || echo \"Unknown\")
+  info \"Detected OS: \$DISTRO \$VERSION\"
+${nc}"
+sleep 2
+
+# Display block 2 — show the compatibility check logic before running it
+echo -e "${b_yellow}
+# grep -qiE '^(ID|ID_LIKE)=...' → searches /etc/os-release for the distro family
+#   -q  → quiet mode: no output, only exit code
+#   -i  → case-insensitive match
+#   -E  → extended regex (allows \b word boundaries and | alternation)
+#   ID_LIKE → covers all derivatives (Mint, Pop!_OS, Zorin, etc.)
+# command -v apt-get → checks if apt-get exists in PATH without running it
+${b_green}
+  if grep -qiE '^(ID|ID_LIKE)=.*\b(ubuntu|debian)\b' /etc/os-release; then
+      ok \"Debian-family OS detected ✅ — fully supported.\"
+  elif command -v apt-get &>/dev/null; then
+      info \"Unknown distro but apt-get found — proceeding...\"
+  else
+      die \"Not a Debian/Ubuntu-based system (apt-get not found).\"
+  fi
+  ok \"Running as: \$(whoami)\"
+${nc}"
+sleep 2
+
+# --- ACTUAL EXECUTION ---
+
 # lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
 # lsb_release -sr → prints the release number (e.g. 22.04)
-# 2>/dev/null → silences any error output if lsb_release is not installed
-# || echo \"Unknown\" → fallback value if the command fails
-${b_green}
-DISTRO=\$(lsb_release -si 2>/dev/null || echo \"Unknown\")
-VERSION=\$(lsb_release -sr 2>/dev/null || echo \"Unknown\")
-info \"Detected OS: \$DISTRO \$VERSION\"
-"
-sleep 4
-
-echo -e "
-${b_yellow}
-# grep -qiE → quiet (-q), case-insensitive (-i), extended regex (-E) search
-# Checks /etc/os-release for lines matching ID= or ID_LIKE= containing \"ubuntu\" or \"debian\"
-# This covers all distros derived from Debian/Ubuntu (Mint, Pop!_OS, Zorin, etc.)
-${b_green}
-if grep -qiE '^(ID|ID_LIKE)=.*\\b(ubuntu|debian)\\b' /etc/os-release 2>/dev/null; then
-    ok \"Debian-family OS detected ✅ — fully supported.\"
-    
-sleep 4
-
-${b_yellow}
-# command -v apt-get → checks if apt-get is available in PATH without running it
-${b_green}
-elif command -v apt-get &>/dev/null; then
-    info \"Unknown distro but apt-get found — proceeding...\"
-else
-    die \"This script requires a Debian/Ubuntu-based system (apt-get not found).\"
-fi
-ok \"Running as: \$(whoami)\"
-${nc}
-"
-sleep 4
-
-# lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
-# lsb_release -sr → prints the release number (e.g. 22.04)
-# 2>/dev/null → silences any error output if lsb_release is not installed
-# || echo "Unknown" → fallback value if the command fails
+# 2>/dev/null     → silences any error output if lsb_release is not installed
+# || echo Unknown → fallback value if the command fails
 DISTRO=$(lsb_release -si 2>/dev/null || echo "Unknown")
 VERSION=$(lsb_release -sr 2>/dev/null || echo "Unknown")
 info "Detected OS: $DISTRO $VERSION"
@@ -246,6 +244,7 @@ if grep -qiE '^(ID|ID_LIKE)=.*\b(ubuntu|debian)\b' /etc/os-release 2>/dev/null; 
 elif command -v apt-get &>/dev/null; then
     info "Unknown distro but apt-get found — proceeding..."
 else
+    # Neither condition met — this system cannot run the installer
     die "This script requires a Debian/Ubuntu-based system (apt-get not found)."
 fi
 
