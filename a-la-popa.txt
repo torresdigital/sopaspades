@@ -272,9 +272,7 @@ echo -ne ${b_yellow}
 sleep 2
 echo -e " sudo rm -rf /usr/local/share/games/openspades "
 sleep 2
-echo
 echo -e " && "
-echo
 sleep 2
 echo -e " sudo rm -rf /usr/local/share/games/sopaspades "
 echo -ne ${nc}
@@ -317,14 +315,11 @@ step "STEP 2 —
 
 echo -ne ${b_green}
 sleep 2
-echo -e " 🇪🇸 Instalando las dependencias "
-echo
+info" 🇪🇸 Instalando las dependencias "
 sleep 2
-echo -e " 🇺🇸 Installing the dependencies "
-echo
+info" 🇺🇸 Installing the dependencies "
 sleep 2
-echo -e " 🇧🇷 Instalando as dependências "
-echo
+info " 🇧🇷 Instalando as dependências "
 echo
 sleep 1
 echo " sudo apt-get install "
@@ -425,14 +420,11 @@ info "🇺🇸 Cloning the repository and installing"
 sleep 2
 info "🇧🇷 Clonando o repositório e instalando"
 sleep 2
-sleep 2
 
 echo -ne ${b_yellow}
 echo -e " sudo rm -Rf sopaspades && sudo rm -Rf openspades "
 sleep 1
-echo
 echo -e " && "
-echo
 sleep 1
 echo -e " git clone https://github.com/atorresbr/sopaspades.git && cd sopaspades "
 echo
@@ -581,7 +573,7 @@ fi
 echo ""
 echo -e "${GREEN}"
 echo "  ╔════════════════════════════════════════════════════════════════════════════════════════════╗"
-echo "  ║(ﾉ☉ヮ⚆)ﾉ🪄⌒*:･ﾟ✧🔥🌟✨BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa BRU 🔫🇧🇷 ║"
+echo "  ║(ﾉ☉ヮ⚆)ﾉ🪄⌒*:･ﾟ✧🔥🌟✨BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa BRU 🔫🇧🇷  ║"
 echo "  ╚════════════════════════════════════════════════════════════════════════════════════════════╝"
 echo -e "${nc}"
 echo "  To start the game, run:"
