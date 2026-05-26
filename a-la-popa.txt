@@ -298,7 +298,8 @@ if dpkg -l 2>/dev/null | grep -q openspades; then
     info "OPENSPADES was installed, removing it 🗑️"
     apt purge openspades -y   # apt purge → remove package + its config files; -y auto-confirms
 else
-    info "OpenSpades or SynSpades are not here 😬"
+sleep 2
+    info "OpenSpades or SynSpades is not installed here 😬"
 fi
 
 echo
@@ -315,11 +316,11 @@ step "STEP 2 —
 
 echo -ne ${b_green}
 sleep 2
-info" 🇪🇸 Instalando las dependencias "
+info "🇪🇸 Instalando las dependencias"
 sleep 2
-info" 🇺🇸 Installing the dependencies "
+info "🇺🇸 Installing the dependencies"
 sleep 2
-info " 🇧🇷 Instalando as dependências "
+info "🇧🇷 Instalando as dependências"
 echo
 sleep 1
 echo " sudo apt-get install "
