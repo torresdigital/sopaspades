@@ -150,6 +150,9 @@ echo -e "
 sleep 2
 clear
 
+show_banner
+echo -ne "${b_green}"
+
 echo -e "
    * * * =============================================== * * *
  *       🇪🇸 Este script instalará Sopa Spades en tu PC 🍜      *
@@ -158,6 +161,9 @@ echo -e "
 sleep 2
 clear
 
+show_banner
+echo -ne "${b_green}"
+
 echo -e "
    * * * =============================================== * * *
  *     🇺🇸 This script will install Sopa Spades on your PC 🍜   *
@@ -165,6 +171,9 @@ echo -e "
 "
 sleep 2
 clear
+
+show_banner
+echo -ne "${b_green}"
 
 echo -e "
    * * * =============================================== * * *
