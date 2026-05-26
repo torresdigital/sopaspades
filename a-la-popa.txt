@@ -125,26 +125,24 @@ echo -e "
    * * * =============================================== * * *
 "
 sleep 2
-clear
+show_banner; echo -ne "${b_green}"   # redraw banner instead of clear so it stays visible
 
-echo -e "show_banner
-
+echo -e "
    * * * =============================================== * * *
  *        🇧🇷   Executando os Comandos de Shell                 *
    * * * =============================================== * * *
 "
 sleep 2
-clear
+show_banner; echo -ne "${b_green}"   # redraw banner instead of clear so it stays visible
 
-echo -e "show_banner
-
+echo -e "
    * * * =============================================== * * *
  *        🇺🇸     Executing the Shell commands                  *
    * * * =============================================== * * *
 "
 
 sleep 2
-clear
+show_banner; echo -ne "${b_green}"   # redraw banner instead of clear so it stays visible
 
 echo -e "
    * * * =============================================== * * *
@@ -152,7 +150,7 @@ echo -e "
    * * * =============================================== * * *
 "
 sleep 2
-clear
+show_banner; echo -ne "${b_green}"   # redraw banner instead of clear so it stays visible
 
 echo -e "
    * * * =============================================== * * *
@@ -160,7 +158,7 @@ echo -e "
    * * * =============================================== * * *
 "
 sleep 2
-clear
+show_banner; echo -ne "${b_green}"   # redraw banner instead of clear so it stays visible
 
 echo -e "
    * * * =============================================== * * *
@@ -327,27 +325,6 @@ echo -ne ${nc}
 
 info "This may take several minutes on a slow connection... ☕"
 
-# apt-get install -y → install all listed packages non-interactively (-y auto-yes)
-# Each package is a development library or build tool required to compile SopaSpades:
-#   build-essential     → gcc, g++, make and other core compilation tools
-#   pkg-config          → helper to find compile/link flags for installed libraries
-#   libglew-dev         → OpenGL Extension Wrangler (GPU rendering extensions)
-#   libcurl4-openssl-dev→ HTTP/network library (used for news feeds / asset downloads)
-#   libsdl2-dev         → SDL2 window/input/audio abstraction layer
-#   libsdl2-image-dev   → SDL2 image loading (PNG, JPG, etc.)
-#   libalut-dev         → OpenAL Utility Toolkit (audio helper library)
-#   xdg-utils           → desktop integration helpers (e.g. xdg-open)
-#   libfreetype6-dev    → font rendering library
-#   libopus-dev         → Opus audio codec
-#   libopusfile-dev     → Opus file reading library
-#   cmake               → cross-platform build system generator
-#   imagemagick         → image conversion tool (used for icon generation)
-#   zip / unzip         → archive utilities for packing/unpacking files
-#   libjpeg-dev         → JPEG image codec
-#   libxinerama-dev     → multi-monitor screen geometry (X11)
-#   libxft-dev          → X11 FreeType font rendering
-#   libopenal-dev       → OpenAL 3D audio library
-#   zlib1g-dev          → compression library (used by many other libs)
 apt-get install -y \
     build-essential \
     pkg-config \
@@ -371,9 +348,6 @@ apt-get install -y \
 
 ok "All dependencies installed."
 
-# Verify the four most critical packages actually installed successfully.
-# dpkg -s "$pkg" → query dpkg status database for the package
-# &>/dev/null → suppress all output; only the exit code matters
 for pkg in libsdl2-dev libglew-dev libopus-dev libfreetype6-dev; do
     dpkg -s "$pkg" &>/dev/null && ok "$pkg installed" || die "$pkg failed to install."
 done
@@ -420,26 +394,17 @@ echo -e "${b_yellow}\n Êxito !\n${nc}"
 sleep 2
 echo -ne ${nc}
 
-# ACTUAL_USER → determine who invoked sudo so we can act as the real user later.
-# $SUDO_USER is set by sudo to the original calling user.
-# logname → fallback: prints the name of the user logged into the terminal.
-# If both fail, default to "root".
 ACTUAL_USER="${SUDO_USER:-$(logname 2>/dev/null || echo root)}"
-# getent passwd → query the system user database; cut -d: -f6 → extract field 6 (home directory)
 USER_HOME=$(getent passwd "$ACTUAL_USER" | cut -d: -f6)
-REPO_DIR="$USER_HOME/sopaspades"   # destination directory for the cloned repository
+REPO_DIR="$USER_HOME/sopaspades"
 
-# Remove any previous clone/build directories to ensure a clean install
+# Remove old clone
 rm -rf "$REPO_DIR" 2>/dev/null || true
 rm -rf "$USER_HOME/openspades" 2>/dev/null || true
 rm -rf "$USER_HOME/a-la-popa" 2>/dev/null || true
 
-# runuser -u "$ACTUAL_USER" -- <cmd> → run the command as the real user (not root)
-# This ensures cloned files are owned by the user, not by root.
-# git clone → download the full repository from GitHub into $REPO_DIR
 runuser -u "$ACTUAL_USER" -- git clone https://github.com/atorresbr/sopaspades.git "$REPO_DIR"
 
-# Sanity-check: verify the clone produced the expected CMakeLists.txt build file
 [ -f "$REPO_DIR/CMakeLists.txt" ] || die "CMakeLists.txt not found — clone may have failed."
 ok "Repository cloned to $REPO_DIR"
 
@@ -494,28 +459,19 @@ echo -e "${b_yellow}\n Êxito !\n${nc}"
 sleep 1
 echo -ne ${nc}
 
-BUILD_DIR="$REPO_DIR/sopaspades.mk"   # out-of-source build directory inside the repo
-# mkdir -p → create the directory and any missing parent directories
+BUILD_DIR="$REPO_DIR/sopaspades.mk"
 runuser -u "$ACTUAL_USER" -- mkdir -p "$BUILD_DIR"
 
-cd "$BUILD_DIR"   # change into the build directory so cmake writes files here
-
-# cmake .. → run CMake using the CMakeLists.txt one level up (the repo root)
-# -DCMAKE_BUILD_TYPE=RelWithDebInfo → compile with optimizations AND debug symbols
-#   (faster than Debug, easier to debug than Release)
+cd "$BUILD_DIR"
 runuser -u "$ACTUAL_USER" -- cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
 
 ok "CMake configuration successful."
 info "Build files written to: $BUILD_DIR"
 
-# nproc → print the number of available CPU cores
-# Use all cores minus 1 to keep the system responsive during the long compile
 CORES=$(( $(nproc) > 1 ? $(nproc) - 1 : 1 ))
 info "Compiling with $CORES of $(nproc) cores (1 kept free) — please wait ☕ ..."
-# make -j"$CORES" → compile using parallel jobs; more jobs = faster build on multi-core CPUs
 runuser -u "$ACTUAL_USER" -- make -j"$CORES"
 
-# Verify the compiled binary actually exists before proceeding
 [ -f "$BUILD_DIR/bin/sopaspades" ] || die "Binary not found after compilation. Check errors above."
 
 ok "Compilation complete!"
@@ -530,12 +486,8 @@ step "STEP 4b —
 | ✨🇧🇷 Instalando no sistema"
 
 info "Running sudo make install..."
-# make install → copies the compiled binary, data files, and desktop entry
-# to the system-wide paths defined by the CMakeLists.txt install() rules
 make install
 
-# command -v sopaspades → checks whether the sopaspades command is findable in $PATH
-# If it is, the install succeeded and the user can run it from anywhere
 if command -v sopaspades &>/dev/null; then
     ok "sopaspades is now available system-wide."
 else
@@ -548,21 +500,17 @@ progress
 # =============================================================================
 # STEP 5 — INSTALL MODERN PACK
 # =============================================================================
-MODERN_PACK="$REPO_DIR/MODERN-PACK/modern_pack.zip"   # path to the optional skin pack zip
-RESOURCES_DIR="$USER_HOME/.local/share/sopaspades/Resources"  # user-local game resources directory
+MODERN_PACK="$REPO_DIR/MODERN-PACK/modern_pack.zip"
+RESOURCES_DIR="$USER_HOME/.local/share/sopaspades/Resources"
 
-# Only install the MODERN-PACK if the zip file was included in the cloned repo
 if [ -f "$MODERN_PACK" ]; then
     step "BONUS — 
     | ✨🇪🇸 Instalando El MODERN-MODERN_PACK
     | ✨🇺🇸 Installing the MODERN-PACK skins 
     | ✨🇧🇷 Instalando O MODERN-PACK skins"
     info "Creating resources directory: $RESOURCES_DIR"
-    # mkdir -p → create the resources directory if it does not already exist
     runuser -u "$ACTUAL_USER" -- mkdir -p "$RESOURCES_DIR"
     info "Extracting modern_pack.zip..."
-    # unzip -o → extract the zip, overwriting existing files without prompting
-    # -d → specify the destination directory
     runuser -u "$ACTUAL_USER" -- unzip -o "$MODERN_PACK" -d "$RESOURCES_DIR"
     ok "MODERN-PACK installed to $RESOURCES_DIR"
 else
@@ -610,11 +558,6 @@ echo
 echo " 🔫🍜✨sopaspades ԅ(≖‿≖ԅ)  "
 echo
 
-# Launch the game as the real user (not root) after installation.
-# Try /usr/games/sopaspades first (standard install path on Debian/Ubuntu).
-# || chains fallback attempts: if the first fails, try su -c as a second option.
-# 2>/dev/null → suppress any error messages from the launch attempt.
-# || true → prevent the script from exiting with an error if the game can't launch.
 if [ "$ACTUAL_USER" != "root" ]; then
     runuser -u "$ACTUAL_USER" -- /usr/games/sopaspades 2>/dev/null || \
     su - "$ACTUAL_USER" -c "/usr/games/sopaspades" 2>/dev/null || true
