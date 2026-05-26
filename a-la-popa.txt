@@ -224,11 +224,10 @@ elif command -v apt-get &>/dev/null; then
 else
     die \"This script requires a Debian/Ubuntu-based system (apt-get not found).\"
 fi
-
 ok \"Running as: \$(whoami)\"
 ${nc}
 "
-sleep 2
+sleep 4
 
 # lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
 # lsb_release -sr → prints the release number (e.g. 22.04)
@@ -260,7 +259,7 @@ step "STEP 1 —
 | ✨🇺🇸 Removing the old directory 
 | ✨🇧🇷 Removendo o antigo diretório"
 sleep 2
-${b_green}
+echo -ne ${b_green}
 info "🇪🇸 Eliminando el directorio antiguo para reinstalar el juego"
 sleep 2
 info "🇺🇸 Removing the old directory to reinstall the Game"
