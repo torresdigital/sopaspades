@@ -190,7 +190,7 @@ step "STEP 0 —
 | ✨🇪🇸 Comprobando compatibilidad 
 | ✨🇺🇸 Checking system compatibility 
 | ✨🇧🇷 Verificando compatibilidade"
-sleep 2
+sleep 4
 
 echo -e "
 ${b_yellow}
@@ -203,7 +203,7 @@ DISTRO=\$(lsb_release -si 2>/dev/null || echo \"Unknown\")
 VERSION=\$(lsb_release -sr 2>/dev/null || echo \"Unknown\")
 info \"Detected OS: \$DISTRO \$VERSION\"
 "
-sleep 2
+sleep 4
 
 echo -e "
 ${b_yellow}
@@ -226,6 +226,7 @@ fi
 ok \"Running as: \$(whoami)\"
 ${nc}
 "
+sleep 4
 
 # lsb_release -si → prints the distributor ID (e.g. Ubuntu, Debian, Mint)
 # lsb_release -sr → prints the release number (e.g. 22.04)
@@ -257,6 +258,7 @@ step "STEP 1 —
 | ✨🇺🇸 Removing the old directory 
 | ✨🇧🇷 Removendo o antigo diretório"
 sleep 2
+${b_green}
 info "🇪🇸 Eliminando el directorio antiguo para reinstalar el juego"
 sleep 2
 info "🇺🇸 Removing the old directory to reinstall the Game"
