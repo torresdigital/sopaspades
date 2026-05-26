@@ -66,7 +66,7 @@ die() {
 # pausing with sleep between frames to simulate work being done.
 progress() {
     sleep 1
-    echo -ne ${b_green}'🟩🟩🟩🟩🟩    (33%)\r '      # print 33% bar, \r returns cursor to line start
+    echo -ne "${b_green}"'🟩🟩🟩🟩🟩    (33%)\r '      # print 33% bar, \r returns cursor to line start
     sleep 1
     echo -ne '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩    (66%)\r '   # overwrite with 66% bar
     sleep 1
@@ -258,7 +258,7 @@ step "STEP 1 —
 | ✨🇺🇸 Removing the old directory 
 | ✨🇧🇷 Removendo o antigo diretório"
 sleep 2
-echo -ne ${b_green}
+echo -ne "${b_green}"
 info "🇪🇸 Eliminando el directorio antiguo para reinstalar el juego"
 sleep 2
 info "🇺🇸 Removing the old directory to reinstall the Game"
@@ -267,14 +267,14 @@ info "🇧🇷 Removendo o antigo diretório para reinstalar o Jogo ✅"
 sleep 2
 echo
 echo
-echo -ne ${b_yellow}
+echo -ne "${b_yellow}"
 sleep 2
 echo -e " sudo rm -rf /usr/local/share/games/openspades "
 sleep 2
 echo -e " && "
 sleep 2
 echo -e " sudo rm -rf /usr/local/share/games/sopaspades "
-echo -ne ${nc}
+echo -ne "${nc}"
 echo
 
 rm -rf /usr/local/games/openspades   2>/dev/null || true   # remove old OpenSpades install; ignore errors if path doesn't exist
@@ -313,7 +313,7 @@ step "STEP 2 —
 | ✨🇺🇸 Installing the dependencies 
 | ✨🇧🇷 Instalando as dependências"
 
-echo -ne ${b_green}
+echo -ne "${b_green}"
 sleep 2
 info "🇪🇸 Instalando las dependencias"
 sleep 2
@@ -322,9 +322,8 @@ sleep 2
 info "🇧🇷 Instalando as dependências"
 echo
 sleep 1
-echo " sudo apt-get install "
-echo -ne ${b_yellow}
-
+echo " sudo apt-get install -y "
+echo -ne "${b_yellow}"
 info "🍺 pkg-config libglew-dev"
 sleep 1
 info "🍺 libcurl4-openssl-dev"
@@ -361,7 +360,7 @@ echo
 echo
 sleep 1
 
-echo -ne ${b_green}
+echo -ne "${b_green}"
 echo -ne '🟩🟩🟩🟩🟩    (33%)\r '
 sleep 1
 echo -ne '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩    (66%)\r '
@@ -373,7 +372,7 @@ sleep 2
 echo -e "${b_yellow}\n Êxito !\n${nc}"
 sleep 1
 
-echo -ne ${nc}
+echo -ne "${nc}"
 
 info "This may take several minutes on a slow connection... ☕"
 
@@ -401,7 +400,12 @@ apt-get install -y \
 ok "All dependencies installed."
 
 for pkg in libsdl2-dev libglew-dev libopus-dev libfreetype6-dev; do
-    dpkg -s "$pkg" &>/dev/null && ok "$pkg installed" || die "$pkg failed to install."
+    # SC2015: use if/else instead of && || to avoid die() firing on ok() failure
+    if dpkg -s "$pkg" &>/dev/null; then
+        ok "$pkg installed"
+    else
+        die "$pkg failed to install."
+    fi
 done
 
 progress
@@ -421,7 +425,7 @@ sleep 2
 info "🇧🇷 Clonando o repositório e instalando"
 sleep 2
 
-echo -ne ${b_yellow}
+echo -ne "${b_yellow}"
 echo -e " sudo rm -Rf sopaspades && sudo rm -Rf openspades "
 sleep 1
 echo -e " && "
@@ -431,7 +435,7 @@ echo
 echo
 
 sleep 1
-echo -ne ${b_green}
+echo -ne "${b_green}"
 echo -ne '🟩🟩🟩🟩🟩    (33%)\r '
 sleep 1
 echo -ne '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩    (66%)\r '
@@ -441,7 +445,7 @@ echo -ne "\n"
 sleep 2
 echo -e "${b_yellow}\n Êxito !\n${nc}"
 sleep 2
-echo -ne ${nc}
+echo -ne "${nc}"
 
 ACTUAL_USER="${SUDO_USER:-$(logname 2>/dev/null || echo root)}"
 USER_HOME=$(getent passwd "$ACTUAL_USER" | cut -d: -f6)
@@ -469,7 +473,7 @@ step "STEP 4 —
 | ✨🇺🇸 installing 
 | ✨🇧🇷 instalando"
 
-echo -ne ${b_green}
+echo -ne "${b_green}"
 sleep 2
 info " 🇪🇸 compilando y instalando "
 echo
@@ -479,13 +483,13 @@ echo
 sleep 2
 info " 🇧🇷 compilando e instalando "
 echo
-echo -ne ${nc}
+echo -ne "${nc}"
 
 info "mkdir sopaspades.mk && cd sopaspades.mk"
 info "cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo"
 info "make -j\$(nproc) && sudo make install"
 
-echo -ne ${b_yellow}
+echo -ne "${b_yellow}"
 echo -e " mkdir sopaspades.mk && cd sopaspades.mk && "
 sleep 1
 echo -e " cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo && "
@@ -496,7 +500,7 @@ sleep 1
 echo
 echo
 sleep 1
-echo -ne ${b_green}
+echo -ne "${b_green}"
 echo -ne '🟩🟩🟩🟩🟩    (33%)\r '
 sleep 1
 echo -ne '🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩    (66%)\r '
@@ -506,7 +510,7 @@ echo -ne "\n"
 sleep 2
 echo -e "${b_yellow}\n Êxito !\n${nc}"
 sleep 1
-echo -ne ${nc}
+echo -ne "${nc}"
 
 BUILD_DIR="$REPO_DIR/sopaspades.mk"
 runuser -u "$ACTUAL_USER" -- mkdir -p "$BUILD_DIR"
@@ -552,16 +556,21 @@ progress
 MODERN_PACK="$REPO_DIR/MODERN-PACK/modern_pack.zip"
 RESOURCES_DIR="$USER_HOME/.local/share/sopaspades/Resources"
 
+echo
+
 if [ -f "$MODERN_PACK" ]; then
     step "BONUS — 
     | ✨🇪🇸 Instalando El MODERN-PACK
     | ✨🇺🇸 Installing the MODERN-PACK  
     | ✨🇧🇷 Instalando O MODERN-PACK "
+
+echo
+
     info "Creating resources directory: $RESOURCES_DIR"
     runuser -u "$ACTUAL_USER" -- mkdir -p "$RESOURCES_DIR"
     info "Extracting modern_pack.zip..."
     runuser -u "$ACTUAL_USER" -- unzip -o "$MODERN_PACK" -d "$RESOURCES_DIR"
-    ok "MODERN-PACK installed to $RESOURCES_DIR"
+    Ok "MODERN-PACK installed to $RESOURCES_DIR"
 else
     info "MODERN-PACK zip not found — skipping."
     info "You can install it later manually from the repo."
@@ -571,10 +580,9 @@ fi
 # DONE
 # =============================================================================
 echo ""
-echo -e "${GREEN}"
-echo "  ╔════════════════════════════════════════════════════════════════════════════════════════════╗"
-echo "  ║(ﾉ☉ヮ⚆)ﾉ🪄⌒*:･ﾟ✧🔥🌟✨BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa BRU 🔫🇧🇷  ║"
-echo "  ╚════════════════════════════════════════════════════════════════════════════════════════════╝"
+echo -e "  ╔════════════════════════════════════════════════════════════════════════════════════════════╗"
+echo -e "  ║  ${b_yellow}(ﾉ☉ヮ⚆)ﾉ🪄⌒*:･ﾟ✧🔥🌟✨${b_green}BUILD COMPLETE / INSTALAÇÃO COMPLETINHA! — Bom jogo! 🍜Sopa BRU 🔫🇧🇷${nc}  ║"
+echo -e "  ╚════════════════════════════════════════════════════════════════════════════════════════════╝"
 echo -e "${nc}"
 echo "  To start the game, run:"
 echo ""
@@ -589,12 +597,15 @@ echo ""
 echo "  Source: https://github.com/atorresbr/sopaspades"
 echo ""
 
-echo -e " ✨😘🇪🇸 Comparte este script ! "
+echo -e " ✨😘 🇪🇸 Comparte este script ! "
 sleep 1
-echo -e " ✨😘🇺🇸 Share this Script ! "
+echo -e " ✨😘 🇺🇸 Share this Script ! "
 sleep 1
-echo -e " ✨😘🇧🇷 Compartilhe este Script ! "
+echo -e " ✨😘 🇧🇷 Compartilhe este Script ! "
 sleep 1
+
+echo
+echo
 
 echo -e "${b_green} ✨🇪🇸 comenzando el Juego ${nc}"
 sleep 1
