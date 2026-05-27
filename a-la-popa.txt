@@ -22,7 +22,7 @@ b_black='\033[1;30m'  # Bold Black text
 b_green='\033[1;32m'  # Bold Green text
 green='\033[0;32m'    # Light Green text
 red='\033[0;31m'      # Red text
-nc='\033[0m'          # No Color — resets formatting back to terminal default
+nc='\033[1;38;2;248;204;11m' # Bold #F8CC0B yellow — default text color throughout script
 
 # Additional bold color aliases used in later sections
 CYAN='\033[1;36m'
@@ -323,7 +323,7 @@ info "🇧🇷 Instalando as dependências"
 echo
 sleep 1
 echo -ne "${nc}" 
-sudo "apt-get install -y "
+"sudo apt-get install -y "
 echo -ne "${b_yellow}"
 info "🍺 pkg-config libglew-dev"
 sleep 1
@@ -627,4 +627,5 @@ else
 fi
 
 echo
+printf '\033[0m'  # restore terminal default color after script ends
 
