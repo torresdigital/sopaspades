@@ -323,7 +323,7 @@ info "🇧🇷 Instalando as dependências"
 echo
 sleep 1
 echo -ne "${nc}" 
-"sudo apt-get install -y "
+echo "sudo apt-get install -y"
 echo -ne "${b_yellow}"
 info "🍺 pkg-config libglew-dev"
 sleep 1
@@ -477,13 +477,10 @@ step "STEP 4 —
 echo -ne "${b_green}"
 sleep 2
 info " 🇪🇸 compilando y instalando "
-echo
 sleep 2
 info " 🇺🇸 compiling and installing "
-echo
 sleep 2
 info " 🇧🇷 compilando e instalando "
-echo
 echo -ne "${nc}"
 
 info "mkdir sopaspades.mk && cd sopaspades.mk"
