@@ -322,7 +322,8 @@ sleep 2
 info "🇧🇷 Instalando as dependências"
 echo
 sleep 1
-echo " sudo apt-get install -y "
+echo -ne "${nc}" 
+sudo "apt-get install -y "
 echo -ne "${b_yellow}"
 info "🍺 pkg-config libglew-dev"
 sleep 1
