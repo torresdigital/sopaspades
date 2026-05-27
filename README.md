@@ -337,12 +337,11 @@ automatically, so you don't need to manually install anything like in other Open
 
 ### Windows
 
-Windows is currently not supported, if anyone wants to go through the pain of building it for Windows, you're more than welcome to.
-If you have built for Windows please send me it on Discord: synth#0420 (I am going to lose the custom tag soon though) 
+on the future 
 
 ### macOS
 
-Same goes for Windows. Although I've yet to meet anyone playing OpenSpades or B&S on macOS
+on the future too
 
 <!-- -->
 ### 🇺🇸 ( •͡˘ _•͡˘)ノDownload and Upload data during building ( installation of the SOPA SPADES game client )
