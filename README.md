@@ -22,6 +22,7 @@
 
 ⚔️ Conexão com FPS: O projeto visa não deixar esquecida a comunidade de jogadores online de FPS, como a de Counter-Strike, unindo essa competitividade ao ambiente de blocos.
 
+
 🎮 Sobre o Jogo: CS + Minecraft
 
 🍜 SOPA SPADES é um FPS em primeira pessoa que mistura a dinâmica tática de jogos como o Counter-Strike com a liberdade de construção e destruição de blocos como no Minecraft.
@@ -36,18 +37,16 @@ projeto é aberto a toda e qualquer boa contribuição de código ou ideias que 
 
 Divirta-se com seus amigos e com toda a comunidade!
 
-
 <!--**Important**: If you have previously installed OpenSpades or any modified version of SopaSpades, you have to uninstall it manually by `sudo rm -rf /usr/local/share/games/openspades` or `sudo rm -rf /usr/local/share/games/sopaspades` before installing a new one.-->
 
 https://github.com/atorresbr/a-la-popa/assets/13744483/1b71f093-dc32-4bd9-a0cf-2dfdc1c10408
 
-## 🍜 🇪🇸 Para los Principiantes | 🇧🇷 Para os iniciantes | 🇺🇸 To Benginners
+## 🍜SAY PUPPA‼🍜(ﾉ☉ヮ⚆)ﾉ🪄⌒*:･ﾟ✧🔥🌟✨ ✨ԅ(≖‿≖✨ԅ)PUPPA‼️
 
+<!-- -->
+## 🧲⚡ wget
 
-
-## 🧲⚡ wget 
-
-
+<!-- -->
    🇪🇸 Primero, verifique si wget está instalado en su PC, simplemente copie el comando haciendo clic en los dos pequeños cuadrados en el lado derecho del comando.
 
    🇺🇸 Firs, verify if wget alread installed on your machine, just click on two lil squares on the right side from the command.
@@ -56,19 +55,24 @@ https://github.com/atorresbr/a-la-popa/assets/13744483/1b71f093-dc32-4bd9-a0cf-2
 
 ```bash
 ## If your system doesn't have wget, this command will install it
-command -v wget >/dev/null 2>&1 || sudo apt install wget -y &&
-sudo rm -rf sopaspades 2>/dev/null || true &&
-sudo rm -rf a-la-popa 2>/dev/null || true &&
-rm -f a-la-popa.sh 2>/dev/null || true
+command -v wget >/dev/null 2>&1 || {
+  sudo apt-get update &&
+  sudo apt-get upgrade -y &&
+  sudo apt-get install -y wget
+}
 ```
-   
-## 🪄✨ install * 🪄✨ instalando * 🪄✨ instalando el juego
+<!-- -->
+## (｡◕‿‿◕｡)🇺🇸🪄✨compile and install
 
-   🇪🇸 Eres principiante  con Linux ?, copie el comando en los cuadrados a la derecha y use el botón derecho del mouse para pegarlo en su terminal y presione ENTER para instalar el juego.
+If you are a extremelly benginer, just copy the command on two squares on right, and use the right click mouse to past in you terminal and press ENTER to install the game.
 
-   🇺🇸 If you are a extremelly benginer, just copy the command on two squares on right, and use the right click mouse to past in you terminal and press ENTER to install the game.
+## 🇧🇷☉ ‿ ⚆🪄✨compilar e instalar
 
-   🇧🇷 Se você é iniciante com Linux, copie o comando nos pequenos quadrados na direita dos comandos. Depois de copiar, cole com botão direito no seu terminal e aperte ENTER.
+Se você é iniciante com Linux, copie o comando nos pequenos quadrados na direita dos comandos. Depois de copiar, cole com botão direito no seu terminal e aperte ENTER.
+
+## ヽ༼ຈل͜ຈ༽ﾉ🇪🇸🪄✨conpilar y instalar el juego
+
+Eres principiante con Linux ?, copie el comando en los cuadrados a la derecha y use el botón derecho del mouse para pegarlo en su terminal y presione ENTER para instalar el juego.
 
 <!--
 ```bash
@@ -163,8 +167,8 @@ rm -rf "$USER_HOME/.local/share/applications/openspades.desktop" \
        "$USER_HOME/.local/share/icons/sopaspades*" \
        "$USER_HOME/.local/share/openspades*" \
        "$USER_HOME/.local/share/sopaspades*" \
-       "$USER_HOME/a-la-popa" "$USER_HOME/a-la-popa.sh" 2>/dev/null || true
-       "$USER_HOME/a-la-popa" "$USER_HOME/sopaspades.sh" 2>/dev/null || true
+       "$USER_HOME/a-la-popa" "$USER_HOME/a-la-popa.sh" \
+       "$USER_HOME/sopaspades.sh" 2>/dev/null || true
 
 
 # clean caches (best-effort)
@@ -176,6 +180,66 @@ update-desktop-database /usr/share/applications 2>/dev/null || true
 update-desktop-database /usr/local/share/applications 2>/dev/null || true
 update-desktop-database "$USER_HOME/.local/share/applications" 2>/dev/null || true
 gtk-update-icon-cache -f /usr/local/share/icons/hicolor 2>/dev/null || true
+
+# ── install build dependencies ────────────────────────────────────────────────
+# Detect the package manager and install all libraries required by CMakeLists.txt.
+# This block runs as root (we are inside sudo bash -s), so no sudo prefix needed.
+#
+# Key fixes vs older README:
+#   libcurl4-openssl-dev  — replaces obsolete libcurl3-openssl-dev (Ubuntu 18.04+)
+#   zlib1g-dev            — required by FindZLIB in CMakeLists.txt (was missing)
+#   libopenal-dev         — 3D audio; libalut-dev alone does not guarantee it
+#   libglu1-mesa-dev      — satisfies OPENGL_GLU_FOUND check in CMakeLists.txt
+#   build-essential       — provides g++/make needed to compile from source
+#
+# References:
+#   https://packages.ubuntu.com/
+#   https://packages.fedoraproject.org/
+if command -v apt-get >/dev/null 2>&1; then
+  apt-get update -qq
+  # Prefer libcurl4-openssl-dev (Ubuntu 18.04+/Debian 10+); fall back to libcurl4-dev
+  CURL_PKG="libcurl4-openssl-dev"
+  apt-cache show "$CURL_PKG" >/dev/null 2>&1 || CURL_PKG="libcurl4-dev"
+  apt-get install -y \
+    build-essential git wget unzip pkg-config cmake \
+    libglew-dev "$CURL_PKG" \
+    libsdl2-dev libsdl2-image-dev \
+    libalut-dev libopenal-dev libglu1-mesa-dev \
+    xdg-utils libfreetype6-dev \
+    libopus-dev libopusfile-dev \
+    imagemagick \
+    libjpeg-dev libxinerama-dev libxft-dev \
+    zlib1g-dev
+elif command -v dnf >/dev/null 2>&1; then
+  # RHEL / Fedora — enable EPEL for packages not in the base repos
+  dnf install -y epel-release 2>/dev/null || true
+  dnf install -y \
+    gcc-c++ make git wget unzip pkgconf-pkg-config cmake \
+    glew-devel libcurl-devel openssl-devel \
+    SDL2-devel SDL2_image-devel \
+    freealut-devel openal-soft-devel \
+    mesa-libGL-devel mesa-libGLU-devel \
+    xdg-utils freetype-devel \
+    opus-devel opusfile-devel \
+    ImageMagick \
+    libjpeg-turbo-devel libXinerama-devel libXft-devel \
+    zlib-devel
+elif command -v yum >/dev/null 2>&1; then
+  # Older RHEL / CentOS 7
+  yum install -y epel-release 2>/dev/null || true
+  yum install -y \
+    gcc-c++ make git wget unzip pkgconfig cmake \
+    glew-devel libcurl-devel openssl-devel \
+    SDL2-devel SDL2_image-devel \
+    freealut-devel openal-soft-devel \
+    mesa-libGL-devel mesa-libGLU-devel \
+    xdg-utils freetype-devel \
+    opus-devel opusfile-devel \
+    ImageMagick \
+    libjpeg-turbo-devel libXinerama-devel libXft-devel \
+    zlib-devel
+fi
+# ──────────────────────────────────────────────────────────────────────────────
 
 # download and run installer as root (already root here — avoids EUID check failure inside a-la-popa.sh)
 wget -q -O "$USER_HOME/a-la-popa.sh" \
@@ -246,267 +310,273 @@ echo ""
 
 EOF
 ```
-<!-- 
 
-```
-## if you sytem don't have wget, this command will install it
-sudo apt install wget && clear && 
+<!---->
 
-## removing game folders from the old openspades version
-sudo rm -rf a-la-popa && rm a-la-popa.sh 2> /dev/null &&
-sudo rm -rf ~/.local/share/openspades* && 
-sudo rm -rf /usr/local/games/openspades 2> /dev/null &&
+## IMPORTANT INFORMATION. 🦍
 
-## downloading the text file to transform in Bash Script
-wget https://raw.githubusercontent.com/torresdigital/sopaspades/main/a-la-popa.txt && \
-sudo mv a-la-popa.txt a-la-popa.sh && \
+<img src="Resources/Assests/cranky_kong.gif" align="left" width="160" alt="Cranky Kong" />
 
-## setting the permissions to you LINUX user and exec the Bash Script to install the game
-sudo chmod +x a-la-popa.sh && sudo ./a-la-popa.sh &&
+🇧🇷 **GCC 7+ · Clang 5+** obrigatório — recomendado **GCC 9+ · Clang 10+** <br>
+🍜 SOPA SPADES já usa C++ nas versões 14/17 para funcionar de forma perfeita em seu sistema. 🪄🌟✨ 🟣Ubuntu 18.04+, 🪄🌟✨ 🔴Debian 10+, 🪄🌟✨ 🔵Pop!\_OS‼️, 🪄🌟✨ 💠Zorin e 🪄🌟✨ 🟢Mint já incluem
+compilador compatível. O script instalador (`a-la-popa.txt`) instala `build-essential`
+automaticamente, então você não precisa fazer a instalação de nada, manualmente como em outros forks do OpenSpades ou synSpades. Aqui você já tem tudo pronto 😌🍜🌟✨
 
-## creating the folder (( directory )) to receive the ModernWar skin pack for Sopaspades
-mkdir -p ~/.local/share/openspades/Resources && cd ~/.local/share/openspades/Resources &&
+🇪🇸 **GCC 7+ · Clang 5+** requerido — recomendado **GCC 9+ · Clang 10+** <br>
+🍜 SOPA SPADES ya usa C++ en las versiones 14/17 para funcionar de forma perfecta en su sistema. 🪄🌟✨ 🟣Ubuntu 18.04+, 🪄🌟✨ 🔴Debian 10+, 🪄🌟✨ 🔵Pop!\_OS‼️, 🪄🌟✨ 💠Zorin y 🪄🌟✨ 🟢Mint ya incluyen
+un compilador compatible. El script instalador (`a-la-popa.txt`) instala `build-essential`
+automáticamente, entonces usted no necesita instalar nada manualmente como en otros forks de OpenSpades o synSpades. Aquí ya tienes todo listo 😌🍜🌟✨
 
-## downloading the pack
-wget https://github.com/torresdigital/sopaspades/raw/main/MODERN-PACK/modern_pack.zip && 
+🇺🇸 **GCC 7+ · Clang 5+** required — recommended **GCC 9+ · Clang 10+** <br>
+🍜 SOPA SPADES already uses C++ in versions 14/17 to work perfectly on your system. 🪄🌟✨ 🟣Ubuntu 18.04+, 🪄🌟✨ 🔴Debian 10+, 🪄🌟✨ 🔵Pop!\_OS‼️, 🪄🌟✨ 💠Zorin e 🪄🌟✨ 🟢Mint already
+ship a compatible compiler. The installer script (`a-la-popa.txt`) installs `build-essential`
+automatically, so you don't need to manually install anything like in other OpenSpades or synSpades forks. Here you already have everything ready 😌🍜🌟✨
 
-## unzipping
-unzip -o modern_pack.zip && \
-
-## starting the game 
-sopaspades
-
-```
-
-
-
-
--->
-
-<!--
-
-```bash
-  sudo apt-get install pkg-config libglew-dev libcurl3-openssl-dev libsdl2-dev \
-     libsdl2-image-dev libalut-dev xdg-utils libfreetype6-dev libopus-dev \
-     libopusfile-dev cmake imagemagick \
-     libjpeg-dev libxinerama-dev libxft-dev && \
-
-   sudo rm -Rf sopaspades && sudo rm -Rf openspades && \
-   git clone https://github.com/torresdigital/sopaspades.git && cd sopaspades && \
-
-   mkdir sopaspades.mk && cd sopaspades.mk && cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo && \
-   make && sudo make install && \
-
-   openspades
-
-```
--->
-
-## 🇪🇸 Para los Maestros | 🇧🇷 Para os Experientes | 🇺🇸 To Masters 
-
- ### Limpar e Instalar / Limpiar y instalar / Clean and Install 
-
-🇪🇸 **Importante**: 
-
-Si ya tiene una instalación antigua en su PC con Linux, debe eliminarla usando este comando a continuación. Copie el comando en los dos pequeños cuadrados de la derecha, péguelo en su terminal con el botón derecho del mouse y presione ENTER.
-
-🇧🇷 **Importante**: 
-
-Se você já tem uma instalação antiga no seu PC com Linux, você precisa remover, usando este comando abaixo. Copie o comando nos dois pequenos quadradinhos à direita, e cole no seu terminal com o botão direiro do Mouse, e aperte ENTER.
-
-🇺🇸 **Important**:
-
- If you have previously installed OpenSpades or any modified version of OpenSpades on you PC. Just copy the comando bellow on the two little squares on right, and use right click to past the command in you terminal and press ENTER.
-
-
-El Comando / O Comando / The Command 👇
-
-```bash
-sudo rm -rf a-la-popa && rm a-la-popa.sh 2> /dev/null && 
-sudo rm -rf ~/.local/share/openspades* &&
-sudo rm -rf ~/.local/share/sopaspades* &&
-sudo rm -rf /usr/local/games/openspades &&
-sudo rm -rf /usr/local/games/sopaspades &&
-sudo rm -rf /usr/games/sopaspades &&
-sudo apt purge openspades -y
-```
-
-
-
-
-## Cómo instalar | How to Install | Como instalar 
-
-### En Linux 💠 On Linux 💠 No Linux
-
-#### installing from source |  instalando a partir do source | instalando desde la source
-
-🇪🇸 GCC 4.9 - Clang 3.2 <br>
-o posterior porque OpenSpades depende en gran medida de las funciones de C++11.
-
-🇧🇷 GCC 4.9 - Clang 3.2 <br>
-ou posterior é recomendado porque o OpenSpades depende muito dos recursos do C++ 11.
-
-🇺🇸 GCC 4.9 - Clang 3.2 <br>
-or later is recommended because OpenSpades relies on C++11 features heavily.
-
-
-### 🇧🇷 Comandos e instalação | 🇺🇸 Commands to instaltion | 🇪🇸 Los comandos y instalacion
-
-## Dependências | Dependences:
-
-1. Instale as seguintes dependências | Install the following dependencies | Instale las siguientes dependencias:
-
-   *To Debian-derived distributions | Para distribuições derivadas do Debian | A distribuciones derivadas de Debian*:
-
-💠 clique nos quadrados pequenos para copiar os comandos. Após copiar, cole no seu terminal com o botão direito do mouse, e aperte Enter.
-
-💠 clic en los cuadrados pequeños para copiar los comandos. Después de copiar, péguelo en su terminal con el botón derecho del mouse y presione Enter.
-
-💠 click on the small squares to copy the commands. After copying, paste into your terminal with the right mouse button and press Enter.
-
-   ```
-   sudo apt-get install pkg-config libglew-dev libcurl3-openssl-dev libsdl2-dev \
-     libsdl2-image-dev libalut-dev xdg-utils libfreetype6-dev libopus-dev \
-     libopusfile-dev cmake imagemagick \
-     libjpeg-dev libxinerama-dev libxft-dev
-   ```
-   
-   💠 On Fedora or RHEL-derived distributions
-
-   💠 Fedora e outras distribuições en RHEL 
-
-   💠 En Fedora y distribuciones derivadas RHEL
-
-   ```
-   sudo dnf install pkgconf-pkg-config glew-devel openssl-devel \
-     libcurl-devel SDL2-devel SDL2_image-devel \
-     freealut-devel xdg-utils freetype-devel opus-devel opusfile-devel \
-     libjpeg-devel libXinerama-devel libXft-devel cmake ImageMagick
-   ```
-
-   ## Instalando el Juego 💠 Instalando o Jogo 💠 Installing the Game
-
-   💠 On other distributions: <br>
-   Install corresponding packages from your repository (or compile from source).
-
-   💠 Em outras distribuições: <br>
-    Instale os pacotes correspondentes do seu repositório (ou compile a partir do código-fonte).
-
-   💠 Sobre otras distribuciones: <br>
-    Instale los paquetes correspondientes desde su repositorio (o compílelos desde el código fuente).
-
-### 2.  Clonar el repositorio 💠 Clonando o repositório 💠 Cloning the repository : 
-
-   ```bash
-   git clone https://github.com/torresdigital/sopaspades.git && cd sopaspades
-   ```
-
-### 3. Execute el comando abajo 💠 Execute o comando abaixo 💠 Run the commmand :
-
-   ```
-   mkdir sopaspades.mk && cd sopaspades.mk && \
-   cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo && make
-   ```
-
-### 4. Terminando la instalacion 💠 Finalizando a Instalação 💠  Finishing the installation :
-
-   ``` bash
-   sudo make install
-   ```
-
-### 5. Iniciar el cliente del juego 💠 Iniciando o Cliente do Jogo 💠 Starting the Game :  <!-- (if installed) -->  
-
-💠 To start the game, type the command below on you TERMINAL, o just copy and past the command . <br>
-💠 Para iniciar el juego, escriba el comando en tu TERMINAL, o simplemente copie y colar. <br>
-💠 Para iniciar o jogo, digite o comando abaixo em seu terminal ou copie e cole. <br>
-
-
-   ``` bash
-   sopaspades
-  ``` 
-
-   or `cd $REPO_DIRECTORY/sopaspades.mk; bin/sopaspades` and enjoy
+<br clear="left" />
 
 
 ### Windows
-<!-- Windows is currently not supported, if anyone wants to go through the pain of building it for Windows, you're more than welcome to.
-If you have built for Windows please send me it on Discord: synth#0420 (I am going to lose the custom tag soon though) -->
+
+Windows is currently not supported, if anyone wants to go through the pain of building it for Windows, you're more than welcome to.
+If you have built for Windows please send me it on Discord: synth#0420 (I am going to lose the custom tag soon though) 
 
 ### macOS
+
 Same goes for Windows. Although I've yet to meet anyone playing OpenSpades or B&S on macOS
 
+<!-- -->
+### 🇺🇸 ( •͡˘ _•͡˘)ノDownload and Upload data during building ( installation of the SOPA SPADES game client )
 
-### Network usage during building
-OpenSpades' build process automatically downloads prebuilt game assets and libraries as needed. Specifically:
+> ✅ **SOPA SPADES does NOT need to download game packs during installation, unlike synSpades and OpenSpades** — both required downloading these files from the network during the build process.
+> The packs are already bundled in this repository under `Resources/Assets` and are automatically unzipped into the correct folders during the install process — exactly as if they had been downloaded from the original sources.
 
-- `pak000-Nonfree.pak` and `font-uniform.pak` from <https://github.com/yvt/openspades-paks>. Can be disabled by passing `-D SOPASPADES_NONFREE_RESOURCES=NO` to CMake.
+The original OpenSpades build process would download these assets from the network:
 
-- The prebuilt binaries of YSRSpades (audio engine) from <https://github.com/yvt/openspades-media>. Can be disabled by passing `-D SOPASPADES_YSR=NO` to CMake.
+- `pak000-Nonfree.pak` and `font-uniform.pak` — originally from <https://github.com/yvt/openspades-paks>. **In SOPA SPADES these are already present in `Resources/Assets` and unpacked locally by the installer.**
+- The prebuilt binaries of YSRSpades (audio engine) — originally from <https://github.com/yvt/openspades-media>. **In SOPA SPADES these are bundled in the repo and do not require a separate download.**
 
-In addition, vcpkg (sort of package manager only used for Windows and macOS builds) [collects and sends telemetry data to Microsoft](https://vcpkg.readthedocs.io/en/latest/about/privacy/). You can opt out of this behavior by passing `-disableMetrics` option when running `vcpkg/bootstrap-vcpkg.sh` command.
+> ⚠️ **Linux users: this does NOT affect you.** On Linux, dependencies are installed via `apt`/`dnf` — vcpkg is never used.
 
+**vcpkg** is Microsoft's C++ package manager. On Windows and macOS, it is used during the source build to automatically download and compile C++ libraries such as SDL2 and OpenAL. When you run `bootstrap-vcpkg.sh`, vcpkg silently sends telemetry data to Microsoft — including information about your build environment and which packages were installed — by default, without asking.
 
-## Troubleshooting
-We will try to help you resolve any issues or resolve any concerns about installing the game on your Linux system.
+To opt out, pass `-disableMetrics` when bootstrapping vcpkg. Run this command **from the root of the source directory, before running `cmake`**, only when building from source on Windows or macOS:
 
+```sh
+bash vcpkg/bootstrap-vcpkg.sh -disableMetrics
+```
 
+### 🇧🇷 ( •͡˘ _•͡˘)ノDownload e Upload de dados durante a compilação ( instalação do cliente de jogo SOPA SPADES )
+
+> ✅ **O SOPA SPADES NÃO precisa baixar pacotes do jogo durante a instalação, como acontecia com o synSpades e o OpenSpades** — ambos precisavam baixar esses arquivos da rede durante a compilação.
+> Os pacotes já estão incluídos neste repositório em `Resources/Assets` e são descompactados automaticamente nas pastas corretas durante o processo de instalação — exatamente como se tivessem sido baixados das fontes originais.
+
+O processo de compilação original do OpenSpades baixava estes arquivos da rede:
+
+- `pak000-Nonfree.pak` e `font-uniform.pak` — originalmente de <https://github.com/yvt/openspades-paks>. **No SOPA SPADES estes arquivos já estão presentes em `Resources/Assets` e são descompactados localmente pelo instalador.**
+- Os binários pré-compilados do YSRSpades (motor de áudio) — originalmente de <https://github.com/yvt/openspades-media>. **No SOPA SPADES estes binários estão incluídos no repositório e não precisam ser baixados separadamente.**
+
+> ⚠️ **Usuários Linux: isso NÃO te afeta.** No Linux, as dependências são instaladas via `apt`/`dnf` — o vcpkg nunca é usado.
+
+**vcpkg** é o gerenciador de pacotes C++ da Microsoft. No Windows e macOS, ele é usado durante a compilação do código-fonte para baixar e compilar automaticamente bibliotecas C++ como SDL2 e OpenAL. Ao executar `bootstrap-vcpkg.sh`, o vcpkg envia silenciosamente dados de telemetria para a Microsoft — incluindo informações sobre seu ambiente de compilação e quais pacotes foram instalados — por padrão, sem avisar.
+
+Para desativar, passe `-disableMetrics` ao inicializar o vcpkg. Execute este comando **na raiz do diretório de código-fonte, antes de executar o `cmake`**, apenas ao compilar o código-fonte no Windows ou macOS:
+
+```sh
+bash vcpkg/bootstrap-vcpkg.sh -disableMetrics
+```
+
+### 🇪🇸 ( •͡˘ _•͡˘)ノDescarga y carga de datos durante la compilación ( instalación del cliente de juego SOPA SPADES )
+
+> ✅ **SOPA SPADES NO necesita descargar paquetes del juego durante la instalación, a diferencia de synSpades y OpenSpades** — ambos requerían descargar estos archivos de la red durante el proceso de compilación.
+> Los paquetes ya están incluidos en este repositorio en `Resources/Assets` y se descomprimen automáticamente en las carpetas correctas durante el proceso de instalación — exactamente como si hubieran sido descargados de las fuentes originales.
+
+El proceso de compilación original de OpenSpades descargaba estos archivos de la red:
+
+- `pak000-Nonfree.pak` y `font-uniform.pak` — originalmente de <https://github.com/yvt/openspades-paks>. **En SOPA SPADES estos archivos ya están presentes en `Resources/Assets` y son descomprimidos localmente por el instalador.**
+- Los binarios precompilados de YSRSpades (motor de audio) — originalmente de <https://github.com/yvt/openspades-media>. **En SOPA SPADES estos binarios están incluidos en el repositorio y no requieren una descarga separada.**
+
+> ⚠️ **Usuarios de Linux: esto NO les afecta.** En Linux, las dependencias se instalan mediante `apt`/`dnf` — vcpkg nunca se usa.
+
+**vcpkg** es el gestor de paquetes C++ de Microsoft. En Windows y macOS, se usa durante la compilación del código fuente para descargar y compilar automáticamente bibliotecas C++ como SDL2 y OpenAL. Al ejecutar `bootstrap-vcpkg.sh`, vcpkg envía silenciosamente datos de telemetría a Microsoft — incluyendo información sobre su entorno de compilación y qué paquetes fueron instalados — de forma predeterminada, sin avisar.
+
+Para desactivarlo, pase `-disableMetrics` al inicializar vcpkg. Ejecute este comando **desde la raíz del directorio de código fuente, antes de ejecutar `cmake`**, solo al compilar el código fuente en Windows o macOS:
+
+```sh
+bash vcpkg/bootstrap-vcpkg.sh -disableMetrics
+```
+
+<!-- -->
+## (｡◕‿‿◕｡)🇺🇸🪄✨ Troubleshooting: compile and install
+
+If you have any installation issue with your distro or Windows / Mac system, you can contact me directly and I will fix it and add the corrections to the repository afterwards.
+
+## 🇧🇷☉ ‿ ⚆🪄✨ Solução de Problemas: compilar e instalar
+
+Se você tiver qualquer problema de instalação com a sua distro ou sistema Windows / Mac, você pode entrar em contato diretamente comigo que eu irei resolver e inserir as correções posteriormente no repositório.
+
+## ヽ༼ຈل͜ຈ༽ﾉ🇪🇸🪄✨ Resolución de Problemas: conpilar y instalar el juego
+
+Si tiene algún problema de instalación con su distro o sistema Windows / Mac, puede contactarme directamente y lo resolveré e insertaré las correcciones en el repositorio posteriormente.
+
+<!-- -->
 ## Licensing
-Please see the file named LICENSE.
 
-## 🍜 SOPA SPADES.
+🇧🇷 Consulte o arquivo de licença aqui: [LICENSE](LICENSE)
 
-SOPA SPADES is a modified version from 😒synSpades and 🤫OpenSpades.
+🇺🇸 Please see the license file here: [LICENSE](LICENSE)
 
- synSpades are a version from openspades with changes by Doctor Dank and Ixve  (( synth )), including a bigger color palette thanks to Liza & other smaller changes such as macros (Totally didn't steal the macros from [this dude](https://www.github.com/yusufcardinal/openspades)).
+🇪🇸 Consulte el archivo de licencia aquí: [LICENSE](LICENSE)
 
-## Automatic mensages * mensajes automáticas *  Mensagens automáticas ( /_sup_instant ).
+## 🍜 SOPA SPADES
 
-<!-- Write `/sopa_macro_` in chat and it'll essentially explain itself to you. There's currently only a macro for the P key & the Mouse Button 4 & 5 keys.
-If someone can, please implement a macro menu where you can set macro keys yourself, as right now you have to add lines to the code to have another bind. -->
+🇺🇸 SOPA SPADES is a modified version from 😒synSpades and 🤫OpenSpades. It includes changes by LINUS TORVALDS, Doctor Dank, and Ixve (AKA synth), The Game client has a BEAUTIFUL color palette — thanks to Liza ( i dont know who is a Liza 😆 ) — and other IMPORTANT changes, such as the catchphrase option in the GAME client, that were added by this [beloved BRU!, called yusufcardinal](https://www.github.com/yusufcardinal/openspades).
 
-### 🇪🇸 Mensajes instantáneos
+🇧🇷 SOPA SPADES é uma versão modificada do 😒synSpades e do 🤫OpenSpades. Inclui alterações de LINUS TORVALDS, Doctor Dank e Ixve (também conhecido como synth), O cliente de Jogo tem uma BELA paleta de cores — graças à Liza ( eu não sei quem é essa Liza 😆 ) — e outras mudanças IMPORTANTES, como a opção de frase personalizadas no cliente de JOGO, que foram adicionadas por este [amado BRU!, chamado yusufcardinal](https://www.github.com/yusufcardinal/openspades).
 
-Puedes configurar tus mensajes instantáneos como un eslogan para usar en el JUEGO, por ejemplo, como "¡SOPA!" o "¡SOMOS LOS CAMPEONES!".
+🇪🇸 SOPA SPADES es una versión modificada de 😒synSpades y 🤫OpenSpades. Incluye cambios de LINUS TORVALDS, Doctor Dank e Ixve (también conocido como synth), El cliente de Juego tiene una paleta de colores HERMOSA — gracias a Liza ( no sé quién es esa Liza 😆 ) — y otros cambios IMPORTANTES, como la opción de frase personalizada en el cliente de JUEGO, que fueron añadidos por este [querido BRU!, llamado yusufcardinal](https://www.github.com/yusufcardinal/openspades).
 
-  el cual puede configurarse en el menú de su cliente SOPA SPADES, en la pestaña AVANZADO. Puedes usar tu frase clave usando la tecla P o las teclas 4 y 5 del mouse Gamer.
+<!-- Original synSpades used `/syn_macro_` — in SOPA SPADES this command is `/sopa_m` -->
 
-Para ver tus mensajes instantáneas y usarlos en el juego, simplemente, presiona la tecla "T" y escribe `/_sup` en el chat del juego y elige tus mensajes instantáneas.
+## 🇧🇷 Mensagens automáticas no chat do Jogo
 
-Para usar en el juego, simplemente presione la tecla correspondiente: para usar el eslogan en "p", presione la tecla "p".
+Na aba **AVANÇADO** das opções do seu cliente SOPA SPADES, você terá 4 opções de mensagem automática:
 
+| Configuração | Tecla / Botão | Descrição |
+|---|---|---|
+| `_sup_mensage_MS4` | Mouse Botão 4 (lateral, avançar) | mensagem automática com o botão 4 do mouse |
+| `_sup_mensage_MS5` | Mouse Botão 5 (lateral, voltar) | mensagem automática com o botão 5 do mouse |
+| `_sup_mensage_P` | Tecla **P** | mensagem automática com a tecla P |
+| `_sup_mensage_O` | Tecla **O** | frase especial SOPA — padrão: *"SOPA are so delicious <3"* |
 
-### 🇺🇸 Instant messages 
+Para ver suas mensagens e opções disponíveis, pressione **T** no jogo e digite `/sopa_m` no chat.
 
- You can configure your instant messages as a Catchphrase to use on the GAME, for example, as " SOPA ! " or " WE ARE THE CHAMPIONS ! ".
+**PRA QUE SERVE ISSO?** Se você quiser provocar alguém ou elogiar seu time no JOGO, você simplesmente não precisa digitar uma frase inteira — basta inserir na configuração e apertar a tecla correspondente.
 
- which can be configured in the menu of your SOPA SPADES client, in the ADVANCED tab. You can use you Catchphrase using the P key and or  the 4 & 5 Mouse Gamer Button Keys.
+> 💡 **Exemplo:** frases que você pode colocar na aba **AVANÇADO** do seu cliente de jogo:
+>
+> MS4  →  "DEUS ABENÇOE A FAMÍLIA!"\
+> MS5  →  "ABENÇOADO SEJA QUEM RESPEITA PAI E MÃE"\
+> P    →  "PALMEIRAS NÃO TEM MUNDIAL!"\
+> O    →  "AMARÁS o TEU PRÓXIMO como a ti mesmo"
 
-To see you CatchPhrases and use on the game, just press " T " key and type `/_sup` on the game chat and choose you CatchPhrases.
+## 🇺🇸 Automatic chat messages
 
-To use in the game, just press the Key corresponding Key: to use the Catchphrase on " p ", press " p " key.
+In the **ADVANCED** tab of your SOPA SPADES client settings, you have 4 auto-message options:
 
-## 🧮 Requirements - Requisitos
+| Setting | Key / Button | Description |
+|---|---|---|
+| `_sup_mensage_MS4` | Mouse Button 4 (side, forward) | auto message with mouse button 4 |
+| `_sup_mensage_MS5` | Mouse Button 5 (side, back) | auto message with mouse button 5 |
+| `_sup_mensage_P` | **P** key | auto message with the P key |
+| `_sup_mensage_O` | **O** key | special SOPA phrase — default: *"SOPA are so delicious <3"* |
 
-### Minimum - Mínimo
+To see your messages and available options, press **T** in-game and type `/sopa_m` in chat.
 
- Linux, OS X, or Windows Vista or later.<br><br>
+**WHAT IS THIS FOR?** If you want to troll someone or praise your team in the GAME, you don't need to type a full sentence — just set it in the settings and press the corresponding key.
 
-1GHz dual-core processor<br>
-GPU: 512MB or more VRAM<br>
-GPU (Intel): Intel HD Graphics 3000 or better<br>
-GPU (NVIDIA): GeForce 9 Series or better<br>
-GPU (AMD): Radeon HD 7350<br>
-1GB RAM<br>
-800x600 display<br>
-Broadband network connection<br>
-Keyboard and pointing device<br>
+> 💡 **Example:** phrases you can add in the **ADVANCED** tab of your game client:
+>
+> MS4  →  "GOD BLESS THE FAMILY!"\
+> MS5  →  "BLESSED IS HE WHO RESPECTS HIS PARENTS"\
+> P    →  "PALMEIRAS HAS NO MUNDIAL!"\
+> O    →  "LOVE YOUR NEIGHBOR AS YOURSELF"
 
-## Recommended - Recomendado
+## 🇪🇸 Mensajes automáticos en el chat del Juego
 
-3GHz quad-core processor<br>
-Stereo audio output<br>
-GPU: 1GB or more VRAM<br>
-GPU (NVIDIA): GeForce GTX 680<br>
-GPU (AMD): Radeon R9 280X<br>
-2GB RAM<br>
-Mouse input<br>
+En la pestaña **AVANZADO** de las opciones de tu cliente SOPA SPADES, tendrás 4 opciones de mensaje automático:
+
+| Configuración | Tecla / Botón | Descripción |
+|---|---|---|
+| `_sup_mensage_MS4` | Botón del mouse 4 (lateral, adelante) | mensaje automático con el botón 4 del mouse |
+| `_sup_mensage_MS5` | Botón del mouse 5 (lateral, atrás) | mensaje automático con el botón 5 del mouse |
+| `_sup_mensage_P` | Tecla **P** | mensaje automático con la tecla P |
+| `_sup_mensage_O` | Tecla **O** | frase especial SOPA — predeterminado: *"SOPA are so delicious <3"* |
+
+Para ver tus mensajes y opciones disponibles, presiona **T** en el juego y escribe `/sopa_m` en el chat.
+
+**¿PARA QUÉ SIRVE ESTO?** Si quieres provocar a alguien o elogiar a tu equipo en el JUEGO, no necesitas escribir una frase entera — simplemente configúrala en los ajustes y presiona la tecla correspondiente.
+
+> 💡 **Ejemplo:** frases que puedes agregar en la pestaña **AVANZADO** de tu cliente de juego:
+>
+> MS4  →  "¡DIOS BENDIGA A LA FAMILIA!"\
+> MS5  →  "¡BENDITO SEA QUIEN RESPETA A SUS PADRES!"\
+> P    →  "¡PALMEIRAS NO TIENE MUNDIAL!"\
+> O    →  "AMARÁS A TU PRÓJIMO COMO A TI MISMO"
+
+## 🧮🇺🇸 the basic settings your PC needs
+
+### 🔻🇺🇸 Minimum
+
+Linux, OS X, or Windows Vista or later.<br><br>
+
+⚙️ 1GHz dual-core processor<br>
+🎮 GPU: 512MB or more VRAM<br>
+🔵 GPU (Intel): Intel HD Graphics 3000 or better<br>
+🟢 GPU (NVIDIA): GeForce 9 Series or better<br>
+🔴 GPU (AMD): Radeon HD 7350<br>
+🧠 1GB RAM<br>
+📺 800x600 display<br>
+🌐 Broadband network connection<br>
+⌨️ Keyboard and pointing device<br>
+
+### ⭐🇺🇸 Recommended
+
+⚙️ 3GHz quad-core processor<br>
+🔊 Stereo audio output<br>
+🎮 GPU: 1GB or more VRAM<br>
+🟢 GPU (NVIDIA): GeForce GTX 680<br>
+🔴 GPU (AMD): Radeon R9 280X<br>
+🧠 2GB RAM<br>
+🖱️ Mouse input<br>
+
+## 🇧🇷 as configurações básicas que o seu PC precisa
+
+### 🔻🇧🇷 Mínimo
+
+Linux, OS X ou Windows Vista ou posterior.<br><br>
+
+⚙️ Processador dual-core 1GHz<br>
+🎮 GPU: 512MB de VRAM ou mais<br>
+🔵 GPU (Intel): Intel HD Graphics 3000 ou melhor<br>
+🟢 GPU (NVIDIA): GeForce série 9 ou melhor<br>
+🔴 GPU (AMD): Radeon HD 7350<br>
+🧠 1GB de RAM<br>
+📺 Resolução 800x600<br>
+🌐 Conexão de rede banda larga<br>
+⌨️ Teclado e dispositivo apontador<br>
+
+### ⭐🇧🇷 Recomendado
+
+⚙️ Processador quad-core 3GHz<br>
+🔊 Saída de áudio estéreo<br>
+🎮 GPU: 1GB de VRAM ou mais<br>
+🟢 GPU (NVIDIA): GeForce GTX 680<br>
+🔴 GPU (AMD): Radeon R9 280X<br>
+🧠 2GB de RAM<br>
+🖱️ Entrada de mouse<br>
+
+## 🇪🇸 la configuración básica que necesita tu PC
+
+### 🔻🇪🇸 Mínimo
+
+Linux, OS X o Windows Vista o posterior.<br><br>
+
+⚙️ Procesador de doble núcleo a 1GHz<br>
+🎮 GPU: 512MB de VRAM o más<br>
+🔵 GPU (Intel): Intel HD Graphics 3000 o mejor<br>
+🟢 GPU (NVIDIA): GeForce serie 9 o mejor<br>
+🔴 GPU (AMD): Radeon HD 7350<br>
+🧠 1GB de RAM<br>
+📺 Pantalla 800x600<br>
+🌐 Conexión de red de banda ancha<br>
+⌨️ Teclado y dispositivo señalador<br>
+
+### ⭐🇪🇸 Recomendado
+
+⚙️ Procesador de cuatro núcleos a 3GHz<br>
+🔊 Salida de audio estéreo<br>
+🎮 GPU: 1GB de VRAM o más<br>
+🟢 GPU (NVIDIA): GeForce GTX 680<br>
+🔴 GPU (AMD): Radeon R9 280X<br>
+🧠 2GB de RAM<br>
+🖱️ Entrada de ratón<br>
