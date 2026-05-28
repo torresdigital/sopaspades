@@ -425,7 +425,7 @@ info "🇺🇸 Cloning the repository and installing"
 sleep 2
 info "🇧🇷 Clonando o repositório e instalando"
 sleep 2
-
+echo
 echo -ne "${b_yellow}"
 echo -e " sudo rm -Rf sopaspades && sudo rm -Rf openspades "
 sleep 1
