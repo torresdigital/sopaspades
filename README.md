@@ -522,7 +522,7 @@ Linux, OS X, or Windows Vista or later.<br><br>
 🧠 1GB RAM<br>
 📺 800x600 display<br>
 🌐 Broadband network connection<br>
-⌨️ Keyboard and pointing device<br>
+⌨️🖱️ Keyboard and Mouse<br>
 
 ### ⭐🇺🇸 Recommended
 
@@ -532,7 +532,7 @@ Linux, OS X, or Windows Vista or later.<br><br>
 🟢 GPU (NVIDIA): GeForce GTX 680<br>
 🔴 GPU (AMD): Radeon R9 280X<br>
 🧠 2GB RAM<br>
-🖱️ Mouse input<br>
+⌨️🖱️ Keyboard and Mouse<br>
 
 ## 🇧🇷 as configurações básicas que o seu PC precisa
 
@@ -548,7 +548,7 @@ Linux, OS X ou Windows Vista ou posterior.<br><br>
 🧠 1GB de RAM<br>
 📺 Resolução 800x600<br>
 🌐 Conexão de rede banda larga<br>
-⌨️ Teclado e dispositivo apontador<br>
+⌨️🖱️ Teclado e Mouse<br>
 
 ### ⭐🇧🇷 Recomendado
 
@@ -558,7 +558,7 @@ Linux, OS X ou Windows Vista ou posterior.<br><br>
 🟢 GPU (NVIDIA): GeForce GTX 680<br>
 🔴 GPU (AMD): Radeon R9 280X<br>
 🧠 2GB de RAM<br>
-🖱️ Entrada de mouse<br>
+⌨️🖱️ Teclado e Mouse<br>
 
 ## 🇪🇸 la configuración básica que necesita tu PC
 
@@ -574,7 +574,7 @@ Linux, OS X o Windows Vista o posterior.<br><br>
 🧠 1GB de RAM<br>
 📺 Pantalla 800x600<br>
 🌐 Conexión de red de banda ancha<br>
-⌨️ Teclado y dispositivo señalador<br>
+⌨️🖱️ Teclado y Mouse<br>
 
 ### ⭐🇪🇸 Recomendado
 
@@ -584,4 +584,4 @@ Linux, OS X o Windows Vista o posterior.<br><br>
 🟢 GPU (NVIDIA): GeForce GTX 680<br>
 🔴 GPU (AMD): Radeon R9 280X<br>
 🧠 2GB de RAM<br>
-🖱️ Entrada de ratón<br>
+⌨️🖱️ Teclado y Mouse<br>
