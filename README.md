@@ -286,29 +286,20 @@ unzip -o "$ACTUAL_HOME/.local/share/sopaspades/Resources/modern_pack.zip" \
   -d "$ACTUAL_HOME/.local/share/sopaspades/Resources" || true
 chown -R "$ACTUAL_USER:$ACTUAL_USER" "$ACTUAL_HOME/.local/share/sopaspades/"
 echo ""
-# 1. We know exactly where it is, so we define it
-SOPA_BIN="/usr/local/games/sopaspades"
-
-# 2. Print the message
-echo ""
-echo "Magic found at: $SOPA_BIN"
-echo ""
-
-# 3. Launch the specific file as the user
-# XDG_RUNTIME_DIR must be set so OpenAL can find the PulseAudio socket
-# (/run/user/<uid>/pulse/native). Without it runuser inherits root's
-# environment and OpenAL fails with "No such file or directory".
 ACTUAL_UID="$(id -u "$ACTUAL_USER" 2>/dev/null || true)"
-if [ -f "$SOPA_BIN" ]; then
+SOPA_BIN=""
+for _p in /usr/local/games/sopaspades /usr/games/sopaspades /usr/local/bin/sopaspades /usr/bin/sopaspades; do
+  if [ -f "$_p" ]; then SOPA_BIN="$_p"; break; fi
+done
+if [ -z "$SOPA_BIN" ]; then
+  echo "Game binary not found. a-la-popa.txt may have failed during build/install."
+  echo "Check the output above for errors, then run: sopaspades"
+else
+  echo "Magic found at: $SOPA_BIN"
   runuser -u "$ACTUAL_USER" -- env \
     XDG_RUNTIME_DIR="/run/user/$ACTUAL_UID" \
     PULSE_SERVER="unix:/run/user/$ACTUAL_UID/pulse/native" \
     "$SOPA_BIN"
-else
-  runuser -u "$ACTUAL_USER" -- env \
-    XDG_RUNTIME_DIR="/run/user/$ACTUAL_UID" \
-    PULSE_SERVER="unix:/run/user/$ACTUAL_UID/pulse/native" \
-    /usr/local/games/sopaspades
 fi
 
 echo "Done and 🍜Puppa ! 🔫🇧🇷."
