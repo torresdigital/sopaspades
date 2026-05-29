@@ -156,6 +156,8 @@ USER_HOME="$(getent passwd "$ORIG_USER" | cut -d: -f6)"
 [ -z "$USER_HOME" ] && USER_HOME="/home/$ORIG_USER"
 
 # remove system-installed files (root)
+# synSpades installs its binary and resources under the "openspades" name —
+# removing the openspades entries below cleans up synSpades installations as well.
 rm -rf /usr/local/games/openspades \
        /usr/local/games/sopaspades \
        /usr/local/share/games/openspades \
@@ -163,8 +165,37 @@ rm -rf /usr/local/games/openspades \
        /usr/local/share/applications/openspades.desktop \
        /usr/local/share/applications/sopaspades.desktop \
        /usr/local/share/pixmaps/openspades.xpm \
+       /usr/local/share/pixmaps/openspades.png \
        /usr/local/share/pixmaps/sopaspades.xpm \
-       /usr/games/openspades /usr/games/sopaspades 2>/dev/null || true
+       /usr/local/share/pixmaps/sopaspades.png \
+       /usr/local/share/doc/openspades \
+       /usr/local/share/doc/sopaspades \
+       /usr/local/share/man/man6/openspades.6.gz \
+       /usr/local/share/man/man6/sopaspades.6.gz \
+       /usr/local/share/menu/openspades \
+       /usr/local/share/menu/sopaspades \
+       /usr/games/openspades /usr/games/sopaspades \
+       /usr/share/games/openspades /usr/share/games/sopaspades \
+       /usr/share/applications/openspades.desktop \
+       /usr/share/applications/sopaspades.desktop \
+       /usr/share/pixmaps/openspades.xpm \
+       /usr/share/pixmaps/openspades.png \
+       /usr/share/pixmaps/sopaspades.xpm \
+       /usr/share/pixmaps/sopaspades.png \
+       /usr/share/doc/openspades \
+       /usr/share/doc/sopaspades \
+       /usr/share/man/man6/openspades.6.gz \
+       /usr/share/man/man6/sopaspades.6.gz \
+       /usr/share/menu/openspades \
+       /usr/share/menu/sopaspades 2>/dev/null || true
+# note: lib/openspades is listed in CMakeLists.txt but marked "Currently not used" — never populated
+# remove hicolor icons (all sizes) — installed by synSpades / openSpades / sopaspades
+for _size in 16x16 24x24 32x32 48x48 64x64 96x96 128x128 256x256; do
+  rm -f /usr/local/share/icons/hicolor/${_size}/apps/openspades.png \
+        /usr/local/share/icons/hicolor/${_size}/apps/sopaspades.png \
+        /usr/share/icons/hicolor/${_size}/apps/openspades.png \
+        /usr/share/icons/hicolor/${_size}/apps/sopaspades.png 2>/dev/null || true
+done
 
 # remove per-user installs (for original user)
 rm -rf "$USER_HOME/.local/share/applications/openspades.desktop" \
