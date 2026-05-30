@@ -277,16 +277,46 @@ echo -e " sudo rm -rf /usr/local/share/games/sopaspades "
 echo -ne "${nc}"
 echo
 
-rm -rf /usr/local/games/openspades   2>/dev/null || true   # remove old OpenSpades install; ignore errors if path doesn't exist
-rm -rf /usr/local/games/sopaspades   2>/dev/null || true   # remove old SopaSpades install
-rm -rf /usr/local/share/games/openspades 2>/dev/null || true  # alternate share location for OpenSpades
-rm -rf /usr/local/share/games/sopaspades 2>/dev/null || true  # alternate share location for SopaSpades
-rm -rf /usr/share/applications/openspades.desktop 2>/dev/null || true  # remove OpenSpades desktop launcher entry
-rm -rf /usr/share/applications/sopaspades.desktop 2>/dev/null || true  # remove SopaSpades desktop launcher entry
-rm -rf /usr/share/pixmaps/openspades.xpm 2>/dev/null || true  # remove OpenSpades icon from pixmaps
-rm -rf /usr/share/pixmaps/sopaspades.xpm 2>/dev/null || true  # remove SopaSpades icon from pixmaps
-rm -rf /usr/games/openspades 2>/dev/null || true   # remove binary from /usr/games
-rm -rf /usr/games/sopaspades 2>/dev/null || true   # remove SopaSpades binary from /usr/games
+# synSpades installs under the "openspades" name — all openspades entries below clean it up too
+rm -rf /usr/local/games/openspades        2>/dev/null || true  # binary (default make install prefix)
+rm -rf /usr/local/games/sopaspades        2>/dev/null || true
+rm -rf /usr/local/share/games/openspades  2>/dev/null || true  # Resources dir
+rm -rf /usr/local/share/games/sopaspades  2>/dev/null || true
+rm -rf /usr/local/share/applications/openspades.desktop 2>/dev/null || true
+rm -rf /usr/local/share/applications/sopaspades.desktop 2>/dev/null || true
+rm -rf /usr/local/share/pixmaps/openspades.xpm  2>/dev/null || true
+rm -rf /usr/local/share/pixmaps/openspades.png  2>/dev/null || true
+rm -rf /usr/local/share/pixmaps/sopaspades.xpm  2>/dev/null || true
+rm -rf /usr/local/share/pixmaps/sopaspades.png  2>/dev/null || true
+rm -rf /usr/local/share/doc/openspades    2>/dev/null || true
+rm -rf /usr/local/share/doc/sopaspades    2>/dev/null || true
+rm -rf /usr/local/share/man/man6/openspades.6.gz 2>/dev/null || true
+rm -rf /usr/local/share/man/man6/sopaspades.6.gz 2>/dev/null || true
+rm -rf /usr/local/share/menu/openspades   2>/dev/null || true
+rm -rf /usr/local/share/menu/sopaspades   2>/dev/null || true
+rm -rf /usr/games/openspades              2>/dev/null || true  # binary from -DCMAKE_INSTALL_PREFIX=/usr builds
+rm -rf /usr/games/sopaspades              2>/dev/null || true
+rm -rf /usr/share/games/openspades        2>/dev/null || true
+rm -rf /usr/share/games/sopaspades        2>/dev/null || true
+rm -rf /usr/share/applications/openspades.desktop 2>/dev/null || true
+rm -rf /usr/share/applications/sopaspades.desktop 2>/dev/null || true
+rm -rf /usr/share/pixmaps/openspades.xpm  2>/dev/null || true
+rm -rf /usr/share/pixmaps/openspades.png  2>/dev/null || true
+rm -rf /usr/share/pixmaps/sopaspades.xpm  2>/dev/null || true
+rm -rf /usr/share/pixmaps/sopaspades.png  2>/dev/null || true
+rm -rf /usr/share/doc/openspades          2>/dev/null || true
+rm -rf /usr/share/doc/sopaspades          2>/dev/null || true
+rm -rf /usr/share/man/man6/openspades.6.gz 2>/dev/null || true
+rm -rf /usr/share/man/man6/sopaspades.6.gz 2>/dev/null || true
+rm -rf /usr/share/menu/openspades         2>/dev/null || true
+rm -rf /usr/share/menu/sopaspades         2>/dev/null || true
+# remove hicolor icons all sizes (synSpades/openSpades/sopaspades install one PNG per size)
+for _size in 16x16 24x24 32x32 48x48 64x64 96x96 128x128 256x256; do
+  rm -f /usr/local/share/icons/hicolor/${_size}/apps/openspades.png \
+        /usr/local/share/icons/hicolor/${_size}/apps/sopaspades.png \
+        /usr/share/icons/hicolor/${_size}/apps/openspades.png \
+        /usr/share/icons/hicolor/${_size}/apps/sopaspades.png 2>/dev/null || true
+done
 rm -rf /home/*/.cache/icon-cache.kcache 2>/dev/null || true  # clear KDE icon cache for all users
 rm -rf /home/*/.cache/thumbnails/*      2>/dev/null || true  # clear thumbnail cache for all users
 rm -rf /home/*/.cache/icons/*           2>/dev/null || true  # clear icon cache directories for all users
