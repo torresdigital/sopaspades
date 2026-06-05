@@ -141,7 +141,6 @@ unzip -o modern_pack.zip && cd ~/ \
 
 ## starting the game 
 sopaspades
-
 ``` -->
 
 ```bash
@@ -200,12 +199,14 @@ done
 # remove per-user installs (for original user)
 rm -rf "$USER_HOME/.local/share/applications/openspades.desktop" \
        "$USER_HOME/.local/share/applications/sopaspades.desktop" \
-       "$USER_HOME/.local/share/icons/openspades*" \
-       "$USER_HOME/.local/share/icons/sopaspades*" \
-       "$USER_HOME/.local/share/openspades*" \
-       "$USER_HOME/.local/share/sopaspades*" \
+       "$USER_HOME/.local/share/icons/openspades" \
+       "$USER_HOME/.local/share/icons/sopaspades" \
+       "$USER_HOME/.local/share/openspades" \
+       "$USER_HOME/.local/share/sopaspades" \
        "$USER_HOME/a-la-popa" "$USER_HOME/a-la-popa.sh" \
        "$USER_HOME/sopaspades.sh" 2>/dev/null || true
+
+       
 
 
 # clean caches (best-effort)
