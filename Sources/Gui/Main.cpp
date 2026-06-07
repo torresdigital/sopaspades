@@ -444,9 +444,9 @@ int main(int argc, char **argv) {
 			SDL_InitSubSystem(SDL_INIT_VIDEO);
 			auto msg = spades::Format(
 			  "Failed to start recording log because of the following error:\n{0}\n\n"
-			  "OpenSpades will continue to run, but any critical events are not logged.",
+			  "SopaSpades will continue to run, but any critical events are not logged.",
 			  ex.what());
-			if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "OpenSpades Log System Failure",
+			if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_WARNING, "SopaSpades Log System Failure",
 			                             msg.c_str(), splashWindow->GetWindow())) {
 				// showing dialog failed.
 			}
@@ -630,7 +630,7 @@ int main(int argc, char **argv) {
 		}
 
 		std::string msg = ex.what();
-		msg = _Tr("Main", "A serious error caused OpenSpades to stop working:\n\n{0}\n\nSee "
+		msg = _Tr("Main", "A serious error caused SopaSpades to stop working:\n\n{0}\n\nSee "
 		                  "SystemMessages.log for more details.",
 		          msg);
 
@@ -638,7 +638,7 @@ int main(int argc, char **argv) {
 
 		SDL_InitSubSystem(SDL_INIT_VIDEO);
 		if (SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
-		                             _Tr("Main", "OpenSpades Fatal Error").c_str(), msg.c_str(),
+		                             _Tr("Main", "SopaSpades Fatal Error").c_str(), msg.c_str(),
 		                             nullptr)) {
 			// showing dialog failed.
 			// TODO: do appropriate action
